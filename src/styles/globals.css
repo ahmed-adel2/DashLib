@@ -1,0 +1,427 @@
+@import "tailwindcss";
+
+@theme {
+  --color-plaster: #f3eee3;
+  --color-paper: #fffdf7;
+  --color-cream: #faf6ec;
+  --color-ink: #16241c;
+  --color-forest: #1b3d2e;
+  --color-forest-deep: #0e2118;
+  --color-gold: #b0863c;
+  --color-gold-light: #e4c58a;
+  --color-brick: #a5382c;
+  --color-sage: #e4e8dc;
+  --color-moss: #cbd2c1;
+  --color-stone: #5b6357;
+  --color-line: #e3ddce;
+  --color-line-field: #dcd5c4;
+  --color-line-strong: #c4baa5;
+  --color-brick-deep: #8a2d23;
+  --color-brick-tint: #f6dfdb;
+  --color-brick-wash: #fbf0ee;
+  --color-brick-ink: #8f2c22;
+  --color-gold-tint: #f5e7c9;
+  --color-gold-lift: #eddcb9;
+  --color-gold-ink: #6b4a10;
+  --color-forest-tint: #e7efe4;
+
+  --font-display: var(--font-amiri), ui-serif, Georgia, serif;
+  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-plaster);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: var(--color-gold-light);
+    color: var(--color-forest-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 2px;
+  }
+
+  ::placeholder {
+    color: var(--color-stone);
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    font: inherit;
+    color: inherit;
+    caret-color: var(--color-brick);
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-moss) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-moss);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+@layer components {
+  .geo-band {
+    height: 6px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-forest) 0 10px,
+      var(--color-gold) 10px 13px,
+      var(--color-forest) 13px 23px,
+      var(--color-paper) 23px 26px
+    );
+  }
+
+  .geo-band-soft {
+    height: 4px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      var(--color-moss) 0 8px,
+      transparent 8px 12px,
+      var(--color-moss) 12px 14px,
+      transparent 14px 22px
+    );
+  }
+
+  .panel {
+    position: relative;
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line);
+  }
+
+  .ticks::before,
+  .ticks::after {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-gold);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .ticks::before {
+    top: -1px;
+    left: -1px;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .ticks::after {
+    right: -1px;
+    bottom: -1px;
+    border-top: 0;
+    border-left: 0;
+  }
+
+  .lbl {
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Keeps compact controls at their drawn size while giving touch a 44×44px
+     hit area. The overlay is transparent and belongs to the control, so the
+     activation, disabled state and focus ring are unchanged. */
+  .tap-target {
+    position: relative;
+  }
+
+  .tap-target::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .tbl thead th {
+    padding: 9px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-stone);
+    background-color: var(--color-cream);
+    border-bottom: 1px solid var(--color-line);
+    white-space: nowrap;
+  }
+
+  .tbl tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: middle;
+  }
+
+  .tbl tbody tr:nth-child(even) td {
+    background-color: rgba(250, 246, 236, 0.45);
+  }
+
+  .tbl tbody tr:hover td {
+    background-color: var(--color-sage);
+  }
+
+  .tbl .num,
+  .tbl th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+
+  .field {
+    width: 100%;
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line-field);
+    border-radius: 2px;
+    padding: 8px 11px;
+    font-size: 13px;
+    color: var(--color-ink);
+    transition: border-color 120ms ease;
+  }
+
+  .field:hover {
+    border-color: var(--color-line-strong);
+  }
+
+  .field:focus {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 1px;
+    border-color: var(--color-forest);
+  }
+
+  select.field {
+    appearance: none;
+    padding-right: 30px;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235b6357' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .link-quiet {
+    text-decoration: underline;
+    text-decoration-color: var(--color-moss);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  .link-quiet:hover {
+    text-decoration-color: var(--color-gold);
+  }
+
+  /* Overdrive Architectural Scroll & Elevation Utilities */
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @supports (animation-timeline: view()) {
+    @keyframes scrollFadeUp {
+      from {
+        opacity: 0.15;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .reveal-on-scroll {
+      animation: scrollFadeUp linear both;
+      animation-timeline: view();
+      animation-range: entry 15% cover 35%;
+    }
+  }
+
+  .architectural-card {
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 200ms ease;
+  }
+
+  .architectural-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px -10px rgba(14, 33, 24, 0.14), 0 0 0 1px rgba(176, 134, 60, 0.25);
+  }
+
+  .architectural-card-interactive {
+    transition: transform 240ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 240ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 200ms ease;
+  }
+
+  .architectural-card-interactive:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-forest);
+    box-shadow: 0 20px 40px -12px rgba(14, 33, 24, 0.16), 0 0 0 1px var(--color-forest);
+  }
+
+  /* Educational badge & stamp motifs */
+  .stamp-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-width: 1.5px;
+  }
+
+  /* Subtle academic paper grain texture helper */
+  .bg-academic-grid {
+    background-image: 
+      linear-gradient(to right, rgba(227, 221, 206, 0.45) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(227, 221, 206, 0.45) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+}
+
+/* Google Translate injects its own toolbar, banner and hover tooltips. The site
+   only needs the language switch itself, so its chrome is parked out of sight
+   and the widget is driven through the button in the navbars. */
+.goog-te-host {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Tailwind's physical utilities do not follow `dir`, so Arabic flips the few
+   that decide where a nav cluster, heading or table cell sits. */
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+[dir="rtl"] .tbl thead th {
+  text-align: right;
+}
+
+[dir="rtl"] .tbl .num,
+[dir="rtl"] .tbl th.num {
+  text-align: left;
+}
+
+[dir="rtl"] select.field {
+  padding-right: 11px;
+  padding-left: 30px;
+  background-position: left 10px center;
+}
+
+/* Reduced motion keeps the feedback that tells you something changed — colour,
+   border, opacity — and removes everything that moves: transforms, smooth
+   scrolling and repeating keyframes. Feedback stays, travel goes. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-property: color, background-color, border-color, outline-color, fill, stroke, opacity !important;
+    transition-duration: 120ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
